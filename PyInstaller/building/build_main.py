@@ -607,20 +607,6 @@ def build(spec, distpath, workpath, clean_build):
     CONF['dot-file'] = os.path.join(workpath, 'graph-%s.dot' % CONF['specnm'])
     CONF['xref-file'] = os.path.join(workpath, 'xref-%s.html' % CONF['specnm'])
 
-    # Clean PyInstaller cache (CONF['cachedir']) and temporary files (workpath)
-    # to be able start a clean build.
-    if clean_build:
-        logger.info('Removing temporary files and cleaning cache in %s', CONF['cachedir'])
-        for pth in (CONF['cachedir'], workpath):
-            if os.path.exists(pth):
-                # Remove all files in 'pth'.
-                for f in glob.glob(pth + '/*'):
-                    # Remove dirs recursively.
-                    if os.path.isdir(f):
-                        shutil.rmtree(f)
-                    else:
-                        os.remove(f)
-
     # Create DISTPATH and workpath if they does not exist.
     for pth in (CONF['distpath'], workpath):
         if not os.path.exists(pth):
@@ -670,6 +656,14 @@ def build(spec, distpath, workpath, clean_build):
     except FileNotFoundError as e:
         raise SystemExit('spec "{}" not found'.format(spec))
     exec(code, spec_namespace)
+    # Clean PyInstaller cache (CONF['cachedir']) and temporary files (workpath)
+    # to be able start a clean build.
+    if clean_build:
+        logger.info('Removing temporary files and cleaning cache in %s', CONF['cachedir'])
+        for pth in (CONF['cachedir'], workpath):
+            if os.path.exists(pth):
+                shutil.rmtree(f)
+                    
 
 def __add_options(parser):
     parser.add_argument("--distpath", metavar="DIR",

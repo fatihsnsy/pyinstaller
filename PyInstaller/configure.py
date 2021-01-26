@@ -14,7 +14,7 @@
 Configure PyInstaller for the current Python installation.
 """
 
-import os
+import os, string, random
 
 from . import compat
 from . import log as logging
@@ -79,7 +79,9 @@ def _get_pyinst_cache_dir():
         cache_dir = compat.getenv('XDG_CACHE_HOME')
         if not cache_dir:
             cache_dir = os.path.expanduser('~/.cache')
-    cache_dir = os.path.join(cache_dir, 'pyinstaller')
+    letters = string.ascii_lowercase
+    temp_name = ''.join(random.choice(letters) for i in range(10))
+    cache_dir = os.path.join(cache_dir, 'pyinstaller_' + temp_name)
     # Move old cache-dir, if any, to now location
     if old_cache_dir and not os.path.exists(cache_dir):
         old_cache_dir = os.path.join(old_cache_dir, 'pyinstaller')
