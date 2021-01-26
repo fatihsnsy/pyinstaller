@@ -662,7 +662,7 @@ def build(spec, distpath, workpath, clean_build):
         logger.info('Removing temporary files and cleaning cache in %s', CONF['cachedir'])
         for pth in (CONF['cachedir'], workpath):
             if os.path.exists(pth):
-                shutil.rmtree(f)
+                shutil.rmtree(pth)
                     
 
 def __add_options(parser):
